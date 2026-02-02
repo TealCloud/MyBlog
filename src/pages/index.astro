@@ -104,24 +104,24 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
             <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="rounded-lg border border-base-200 bg-base-200/50 p-4">
                 <div class="text-xs uppercase tracking-wider text-base-content/60">IP Address</div>
-                <div class="mt-1 font-mono text-lg" data-ip>Loading��</div>
+                <div class="mt-1 font-mono text-lg" data-ip>Loading..</div>
               </div>
               <div class="rounded-lg border border-base-200 bg-base-200/50 p-4">
                 <div class="text-xs uppercase tracking-wider text-base-content/60">Location</div>
-                <div class="mt-1 text-lg" data-location>Loading��</div>
+                <div class="mt-1 text-lg" data-location>Loading..</div>
               </div>
               <div class="rounded-lg border border-base-200 bg-base-200/50 p-4">
                 <div class="text-xs uppercase tracking-wider text-base-content/60">Provider</div>
-                <div class="mt-1 text-lg" data-provider>Loading��</div>
+                <div class="mt-1 text-lg" data-provider>Loading..</div>
               </div>
               <div class="rounded-lg border border-base-200 bg-base-200/50 p-4">
                 <div class="text-xs uppercase tracking-wider text-base-content/60">Timezone</div>
-                <div class="mt-1 text-lg" data-timezone>Loading��</div>
+                <div class="mt-1 text-lg" data-timezone>Loading..</div>
               </div>
             </div>
 
             <div class="mt-5 flex flex-wrap gap-2 text-sm" data-tags></div>
-            <div class="mt-4 text-xs text-base-content/60" data-status>Fetching IP details��</div>
+            <div class="mt-4 text-xs text-base-content/60" data-status>Fetching IP details..</div>
           </div>
         </div>
 
@@ -145,7 +145,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
               });
             };
 
-            fetch("https://my.ippure.com/v1/info")
+            fetch("/api/ip.json")
               .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
               .then((data) => {
                 setText("[data-ip]", data.ip || "Unknown");
@@ -176,4 +176,3 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     </div>
   </MainCard>
 </BaseLayout>
-
