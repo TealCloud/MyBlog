@@ -10,11 +10,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 <BaseLayout title="Home">
   <MainCard
     title="欢迎来到我的博客!"
-    description="学习资料与近期知识分享"
+    description="兴趣使然, 才有了这么一个小站~"
     textOverlay="HOME"
     infoIcon="lucide:info"
   >
-    <div class="space-y-8">
+    <div class="space-y-6">
       <!-- Hero Section -->
       <section class="py-6">
         <div class="flex flex-col items-center text-center">
@@ -24,7 +24,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
             🌟 TealCloud的个人网站 🌟
           </h1>
           <p class="text-xl text-base-content/80 max-w-3xl mb-8">
-            学无止境，天道酬勤
+            学无止境, 天道酬勤
           </p>
         </div>
       </section>
@@ -69,11 +69,111 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           <Icon name="lucide:rocket" class="w-6 h-6 text-primary" />
           <span>访客信息</span>
         </h2>
+        <div
+          class="card bg-base-100/80 border border-base-200 shadow-md hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-1 relative overflow-hidden"
+          id="ip-info-card"
+          >
+          <div
+            class="absolute -right-16 -top-16 h-40 w-40 rounded-full blur-3xl opacity-30 bg-gradient-to-br from-primary to-secondary"
+            aria-hidden="true"
+          ></div>
+          <div class="card-body p-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <span
+                  class="inline-flex h-10 w-10 items-center justify-center rounded-lg"
+                  style="background-color: color-mix(in oklch, var(--p, oklch(0.7 0.2 30)), transparent 85%);"
+                >
+                  <Icon name="lucide:map-pin" class="h-5 w-5 text-primary" />
+                </span>
+                <div>
+                  <h3 class="text-lg font-bold">Visitor IP</h3>
+                  <p class="text-sm text-base-content/70">Real-time lookup from IPPure</p>
+                </div>
+              </div>
+              <a
+                href="https://ippure.com"
+                target="_blank"
+                rel="noreferrer"
+                class="btn btn-sm btn-outline border-base-300"
+              >
+                IPPure
+              </a>
+            </div>
 
-        <a href="https://ippure.com" target="_blank">
-          <img src="https://my.ippure.com/v1/card" alt="访客IP信息卡片" title="点击查看IP信息" />
-        </a>
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="rounded-lg border border-base-200 bg-base-200/50 p-4">
+                <div class="text-xs uppercase tracking-wider text-base-content/60">IP Address</div>
+                <div class="mt-1 font-mono text-lg" data-ip>Loading��</div>
+              </div>
+              <div class="rounded-lg border border-base-200 bg-base-200/50 p-4">
+                <div class="text-xs uppercase tracking-wider text-base-content/60">Location</div>
+                <div class="mt-1 text-lg" data-location>Loading��</div>
+              </div>
+              <div class="rounded-lg border border-base-200 bg-base-200/50 p-4">
+                <div class="text-xs uppercase tracking-wider text-base-content/60">Provider</div>
+                <div class="mt-1 text-lg" data-provider>Loading��</div>
+              </div>
+              <div class="rounded-lg border border-base-200 bg-base-200/50 p-4">
+                <div class="text-xs uppercase tracking-wider text-base-content/60">Timezone</div>
+                <div class="mt-1 text-lg" data-timezone>Loading��</div>
+              </div>
+            </div>
+
+            <div class="mt-5 flex flex-wrap gap-2 text-sm" data-tags></div>
+            <div class="mt-4 text-xs text-base-content/60" data-status>Fetching IP details��</div>
+          </div>
+        </div>
+
+        <script is:inline>
+          const card = document.querySelector("#ip-info-card");
+          if (card) {
+            const setText = (selector, value) => {
+              const el = card.querySelector(selector);
+              if (el) el.textContent = value;
+            };
+
+            const setTags = (items) => {
+              const wrap = card.querySelector("[data-tags]");
+              if (!wrap) return;
+              wrap.innerHTML = "";
+              items.filter(Boolean).forEach((item) => {
+                const tag = document.createElement("span");
+                tag.className = "badge badge-outline border-base-300";
+                tag.textContent = item;
+                wrap.appendChild(tag);
+              });
+            };
+
+            fetch("https://my.ippure.com/v1/info")
+              .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+              .then((data) => {
+                setText("[data-ip]", data.ip || "Unknown");
+                setText(
+                  "[data-location]",
+                  [data.city, data.region, data.country].filter(Boolean).join(", ") || "Unknown"
+                );
+                setText(
+                  "[data-provider]",
+                  data.asOrganization ? `${data.asOrganization} (AS${data.asn || "?"})` : "Unknown"
+                );
+                setText("[data-timezone]", data.timezone || "Unknown");
+                setTags([
+                  data.countryCode ? `Country: ${data.countryCode}` : null,
+                  data.postalCode ? `ZIP: ${data.postalCode}` : null,
+                  typeof data.fraudScore === "number" ? `Fraud Score: ${data.fraudScore}` : null,
+                  data.isResidential ? "Residential" : "Non-residential",
+                  data.isBroadcast ? "Broadcast" : "Unicast",
+                ]);
+                setText("[data-status]", "Updated just now.");
+              })
+              .catch(() => {
+                setText("[data-status]", "Failed to fetch IP details. Please try again later.");
+              });
+          }
+        </script>
       </section>
     </div>
   </MainCard>
 </BaseLayout>
+
