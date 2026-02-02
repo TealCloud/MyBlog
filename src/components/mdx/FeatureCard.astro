@@ -4,6 +4,7 @@ export interface FeatureCardProps {
   description: string;
   icon: string;
   color?: string;
+  href?: string;
 }
 
 const {
@@ -11,25 +12,51 @@ const {
   description,
   icon,
   color = "oklch(0.6 0.2 250)", // Default blue color
+  href,
 } = Astro.props as FeatureCardProps;
 
 import { Icon } from "astro-icon/components";
 ---
 
-<div
-  class="card bg-base-100 shadow-md hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-1 border border-base-200"
->
-  <div class="card-body p-6">
-    <div class="flex flex-col items-center text-center sm:items-start sm:text-left">
-      <div
-        class="mb-4 p-3 rounded-lg"
-        style={`background-color: color-mix(in oklch, ${color}, transparent 90%); color: ${color};`}
-      >
-        <Icon name={icon} class="w-8 h-8" />
-      </div>
+{href ? (
+  <a
+    href={href}
+    class="block cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+  >
+    <div
+      class="card bg-base-100 shadow-md hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-1 border border-base-200"
+    >
+      <div class="card-body p-6">
+        <div class="flex flex-col items-center text-center sm:items-start sm:text-left">
+          <div
+            class="mb-4 p-3 rounded-lg"
+            style={`background-color: color-mix(in oklch, ${color}, transparent 90%); color: ${color};`}
+          >
+            <Icon name={icon} class="w-8 h-8" />
+          </div>
 
-      <h3 class="text-xl font-bold mb-2">{title}</h3>
-      <p class="text-base-content/70">{description}</p>
+          <h3 class="text-xl font-bold mb-2">{title}</h3>
+          <p class="text-base-content/70">{description}</p>
+        </div>
+      </div>
+    </div>
+  </a>
+) : (
+  <div
+    class="card bg-base-100 shadow-md hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-1 border border-base-200"
+  >
+    <div class="card-body p-6">
+      <div class="flex flex-col items-center text-center sm:items-start sm:text-left">
+        <div
+          class="mb-4 p-3 rounded-lg"
+          style={`background-color: color-mix(in oklch, ${color}, transparent 90%); color: ${color};`}
+        >
+          <Icon name={icon} class="w-8 h-8" />
+        </div>
+
+        <h3 class="text-xl font-bold mb-2">{title}</h3>
+        <p class="text-base-content/70">{description}</p>
+      </div>
     </div>
   </div>
-</div>
+)}
