@@ -84,7 +84,6 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
               { name: "C++", icon: "simple-icons:cplusplus", color: "oklch(0.6 0.2 240)" },
               { name: "Python", icon: "simple-icons:python", color: "oklch(0.7 0.2 250)" },
               { name: "CUDA", icon: "simple-icons:nvidia", color: "oklch(0.5 0.2 120)" },
-              { name: "LaTeX", icon: "simple-icons:latex", color: "oklch(0.7 0.2 200)" },
             ].map((tech) => (
               <div class="flex flex-col items-center justify-center p-4 bg-base-200 rounded-lg hover:bg-base-300 transition-colors">
                 <div class="text-3xl mb-2" style={`color: ${tech.color}`}>
@@ -110,13 +109,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
               [
                 {
                   date: "February 2026",
-                  title: "博客搬迁至此",
-                  desc: "使用了Frosti模板.",
-                },
-                {
-                  date: "January 2026",
-                  title: "一篇论文发表在Image and Vision Computing",
-                  desc: "以co-author身份.",
+                  title: "博客搬迁至Cloudflare Pages",
+                  desc: "使用开源Frosti模板.",
                 },
               ].map((item, i) => (
                 <div class="relative flex gap-4 pb-2 md:pb-0 md:min-w-[250px]">
